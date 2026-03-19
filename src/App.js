@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Login from "./screens/auth/login";
 import Home from "./screens/home";
-import { getToken } from "./spotify";
+import { getToken, setClientToken } from "./spotify"; // ✅ added
 
 function App() {
   const [token, setToken] = useState(null);
@@ -9,6 +9,7 @@ function App() {
   useEffect(() => {
     const code = new URLSearchParams(window.location.search).get("code");
     console.log("CODE:", code);
+
     if (code) {
       getToken(code).then((data) => {
         console.log("TOKEN DATA:", data);
@@ -16,6 +17,8 @@ function App() {
         if (data.access_token) {
           localStorage.setItem("access_token", data.access_token);
           setToken(data.access_token);
+
+          setClientToken(data.access_token); // ⭐ IMPORTANT
 
           // clean URL
           window.history.replaceState({}, document.title, "/");
@@ -27,6 +30,7 @@ function App() {
       const savedToken = localStorage.getItem("access_token");
       if (savedToken) {
         setToken(savedToken);
+        setClientToken(savedToken); // ⭐ IMPORTANT
       }
     }
   }, []);

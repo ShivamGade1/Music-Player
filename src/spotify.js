@@ -1,3 +1,5 @@
+import axios from "axios";
+// 🔐 SPOTIFY CONFIG
 const clientId = "bec5e0ed16c443f98b3e416e6fe8ab21";
 const redirectUri = "https://music-player-zeta-liard-95.vercel.app/";
 
@@ -10,7 +12,10 @@ const scopes = [
   "playlist-read-private",
 ];
 
-// PKCE helper
+// =========================
+// 🔑 PKCE HELPERS
+// =========================
+
 const generateRandomString = (length) => {
   const possible =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -21,7 +26,7 @@ const generateRandomString = (length) => {
   return text;
 };
 
-// ✅ FIX: persistent code verifier
+// ✅ persistent verifier
 const getCodeVerifier = () => {
   let verifier = localStorage.getItem("code_verifier");
 
@@ -42,9 +47,12 @@ const generateCodeChallenge = async (verifier) => {
     .replace(/\//g, "_");
 };
 
-// 🔐 LOGIN URL
+// =========================
+// 🚀 LOGIN URL
+// =========================
+
 export const getLoginUrl = async () => {
-  const verifier = getCodeVerifier(); // ✅ FIX
+  const verifier = getCodeVerifier();
   const codeChallenge = await generateCodeChallenge(verifier);
 
   return `${authEndpoint}?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(
@@ -54,7 +62,10 @@ export const getLoginUrl = async () => {
   )}`;
 };
 
+// =========================
 // 🎧 TOKEN EXCHANGE
+// =========================
+
 export const getToken = async (code) => {
   const verifier = localStorage.getItem("code_verifier");
 
@@ -77,3 +88,19 @@ export const getToken = async (code) => {
   const data = await response.json();
   return data;
 };
+
+// =========================
+// 🎯 APIKIT (AXIOS)
+// =========================
+
+
+const APIKIT = axios.create({
+  baseURL: "https://api.spotify.com/v1",
+});
+
+// ✅ set token globally
+export const setClientToken = (token) => {
+  APIKIT.defaults.headers["Authorization"] = `Bearer ${token}`;
+};
+
+export default APIKIT;
