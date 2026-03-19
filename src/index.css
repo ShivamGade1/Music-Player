@@ -1,4 +1,4 @@
-@import url(shared/globalStyle.css);
+@import "./shared/globalStyle.css";
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
