@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Library from './library'
 import Feed from './feed'
@@ -7,13 +6,11 @@ import Player from './player'
 import Trending from './trending'
 import './home.css'
 import Sidebar from '../components/sidebar'
-import Login from './auth/login'
 export default function Home() {
-    return (
+    return  (
         <Router>
             <div className='main-body'>
-                <Login />
-                {/*<Sidebar />
+                <Sidebar />
                 <Routes>
                     <Route path='/' element={<Library />} />
                     <Route path='/feed' element={<Feed />} />
@@ -21,7 +18,7 @@ export default function Home() {
                     <Route path='/player' element={<Player />} />
                     <Route path='/trending' element={<Trending />} />
                     <Route path='/library' element={<Library />} />
-                </Routes>*/}
+                </Routes>
             </div>
         </Router>
     )
