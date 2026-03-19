@@ -13,7 +13,7 @@ export default function Home() {
         <Router>
             <div className='main-body'>
                 <Login />
-                <Sidebar />
+                {/*<Sidebar />
                 <Routes>
                     <Route path='/' element={<Library />} />
                     <Route path='/feed' element={<Feed />} />
@@ -21,7 +21,7 @@ export default function Home() {
                     <Route path='/player' element={<Player />} />
                     <Route path='/trending' element={<Trending />} />
                     <Route path='/library' element={<Library />} />
-                </Routes>
+                </Routes>*/}
             </div>
         </Router>
     )
