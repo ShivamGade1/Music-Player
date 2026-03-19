@@ -14,6 +14,8 @@ export default function Sidebar() {
   useEffect(() => {
   const token = localStorage.getItem("access_token");
 
+  console.log("TOKEN USED:", token);
+
   if (!token) {
     console.error("NO TOKEN FOUND");
     return;
@@ -26,15 +28,19 @@ export default function Sidebar() {
     },
   })
     .then((res) => {
+      console.log("STATUS:", res.status);
+
       if (!res.ok) {
         return res.text().then((text) => {
           console.error("API ERROR:", text);
-          return null;
         });
       }
+
       return res.json();
     })
     .then((data) => {
+      console.log("USER DATA:", data);
+
       if (data && data.images && data.images.length > 0) {
         setImage(data.images[0].url);
       }
