@@ -8,8 +8,8 @@ import { MdSpaceDashboard } from "react-icons/md";
 
 export default function Sidebar() {
   const [image, setImage] = useState(
-    "https://via.placeholder.com/50"
-  );
+  "https://i.imgur.com/6VBx3io.png"
+);
 
   useEffect(() => {
   const token = localStorage.getItem("access_token");
@@ -56,11 +56,11 @@ export default function Sidebar() {
         <SidebarButton title="Feed" to="/feed" icon={<MdSpaceDashboard />} />
         <SidebarButton title="Trending" to="/trending" icon={<FaGripfire />} />
         <SidebarButton title="Player" to="/player" icon={<FaPlay />} />
-        <SidebarButton title="Favorites" to="/favorites" icon={<MdFavorite />} />
+        <SidebarButton title="Favorite" to="/favorite" icon={<MdFavorite />} />
         <SidebarButton title="Library" to="/" icon={<IoLibrary />} />
       </div>
 
-      <SidebarButton title="Sign Out" to="" icon={<FaSignOutAlt />} />
+      <SidebarButton title="Sign Out" to="/" icon={<FaSignOutAlt />} />
     </div>
   );
 }
