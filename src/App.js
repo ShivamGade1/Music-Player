@@ -8,7 +8,7 @@ function App() {
 
   useEffect(() => {
     const code = new URLSearchParams(window.location.search).get("code");
-
+    console.log("CODE:", code);
     if (code) {
       getToken(code).then((data) => {
         console.log("TOKEN DATA:", data);
