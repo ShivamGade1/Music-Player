@@ -14,8 +14,6 @@ export default function Sidebar() {
   useEffect(() => {
   const token = localStorage.getItem("access_token");
 
-  console.log("TOKEN USED:", token); // debug
-
   if (!token) {
     console.error("NO TOKEN FOUND");
     return;
@@ -24,23 +22,19 @@ export default function Sidebar() {
   fetch("https://api.spotify.com/v1/me", {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${token}`, // ✅ VERY IMPORTANT
+      Authorization: `Bearer ${token}`,
     },
   })
-    .then(async (res) => {
-      console.log("STATUS:", res.status);
-
+    .then((res) => {
       if (!res.ok) {
-        const text = await res.text();
-        console.error("API ERROR:", text);
-        return null;
+        return res.text().then((text) => {
+          console.error("API ERROR:", text);
+          return null;
+        });
       }
-
       return res.json();
     })
     .then((data) => {
-      console.log("USER DATA:", data);
-
       if (data && data.images && data.images.length > 0) {
         setImage(data.images[0].url);
       }
