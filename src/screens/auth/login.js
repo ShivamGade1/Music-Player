@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { getLoginUrl } from "../../spotify";
 import "./login.css";
 
 export default function Login() {
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
-    const url = await getLoginUrl();
-    window.location.href = url;
+    setLoading(true);
+    try {
+      const url = await getLoginUrl();
+      window.location.href = url;
+    } catch (error) {
+      console.error("Login error:", error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -18,7 +25,7 @@ export default function Login() {
       />
 
       <div className="login-btn" onClick={handleLogin}>
-        LOG IN
+        {loading ? "LOADING..." : "LOG IN"}
       </div>
     </div>
   );

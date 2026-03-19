@@ -7,7 +7,7 @@ const scopes = [
   "user-read-private",
   "user-read-email",
   "user-top-read",
-  "playlist-read-private"
+  "playlist-read-private",
 ];
 
 // PKCE helper
@@ -32,6 +32,7 @@ const generateCodeChallenge = async (codeVerifier) => {
     .replace(/\//g, "_");
 };
 
+// 🔐 LOGIN URL
 export const getLoginUrl = async () => {
   const codeChallenge = await generateCodeChallenge(codeVerifier);
 
@@ -42,4 +43,28 @@ export const getLoginUrl = async () => {
   )}&code_challenge_method=S256&code_challenge=${codeChallenge}&scope=${scopes.join(
     "%20"
   )}`;
+};
+
+// 🎧 TOKEN EXCHANGE (NEW ADDITION)
+export const getToken = async (code) => {
+  const verifier = localStorage.getItem("code_verifier");
+
+  const body = new URLSearchParams({
+    client_id: clientId,
+    grant_type: "authorization_code",
+    code: code,
+    redirect_uri: redirectUri,
+    code_verifier: verifier,
+  });
+
+  const response = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: body,
+  });
+
+  const data = await response.json();
+  return data;
 };
