@@ -16,28 +16,36 @@ export default function Sidebar() {
 
   console.log("TOKEN USED:", token); // debug
 
-  if (token) {
-    fetch("https://api.spotify.com/v1/me", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(async (res) => {
-        if (!res.ok) {
-          const text = await res.text();
-          console.error("API ERROR:", text);
-          return null;
-        }
-        return res.json();
-      })
-      .then((data) => {
-        if (data && data.images && data.images.length > 0) {
-          setImage(data.images[0].url);
-        }
-      })
-      .catch((err) => console.error("Fetch error:", err));
+  if (!token) {
+    console.error("NO TOKEN FOUND");
+    return;
   }
+
+  fetch("https://api.spotify.com/v1/me", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`, // ✅ VERY IMPORTANT
+    },
+  })
+    .then(async (res) => {
+      console.log("STATUS:", res.status);
+
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("API ERROR:", text);
+        return null;
+      }
+
+      return res.json();
+    })
+    .then((data) => {
+      console.log("USER DATA:", data);
+
+      if (data && data.images && data.images.length > 0) {
+        setImage(data.images[0].url);
+      }
+    })
+    .catch((err) => console.error("Fetch error:", err));
 }, []);
 
   return (
