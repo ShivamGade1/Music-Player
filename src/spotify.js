@@ -21,10 +21,20 @@ const generateRandomString = (length) => {
   return text;
 };
 
-const codeVerifier = generateRandomString(128);
+// ✅ FIX: persistent code verifier
+const getCodeVerifier = () => {
+  let verifier = localStorage.getItem("code_verifier");
 
-const generateCodeChallenge = async (codeVerifier) => {
-  const data = new TextEncoder().encode(codeVerifier);
+  if (!verifier) {
+    verifier = generateRandomString(128);
+    localStorage.setItem("code_verifier", verifier);
+  }
+
+  return verifier;
+};
+
+const generateCodeChallenge = async (verifier) => {
+  const data = new TextEncoder().encode(verifier);
   const digest = await window.crypto.subtle.digest("SHA-256", data);
   return btoa(String.fromCharCode(...new Uint8Array(digest)))
     .replace(/=/g, "")
@@ -34,9 +44,8 @@ const generateCodeChallenge = async (codeVerifier) => {
 
 // 🔐 LOGIN URL
 export const getLoginUrl = async () => {
-  const codeChallenge = await generateCodeChallenge(codeVerifier);
-
-  localStorage.setItem("code_verifier", codeVerifier);
+  const verifier = getCodeVerifier(); // ✅ FIX
+  const codeChallenge = await generateCodeChallenge(verifier);
 
   return `${authEndpoint}?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(
     redirectUri
@@ -45,7 +54,7 @@ export const getLoginUrl = async () => {
   )}`;
 };
 
-// 🎧 TOKEN EXCHANGE (NEW ADDITION)
+// 🎧 TOKEN EXCHANGE
 export const getToken = async (code) => {
   const verifier = localStorage.getItem("code_verifier");
 
