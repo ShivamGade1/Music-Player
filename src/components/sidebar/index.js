@@ -12,24 +12,33 @@ export default function Sidebar() {
   );
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
+  const token = localStorage.getItem("access_token");
 
-    if (token) {
-      fetch("https://api.spotify.com/v1/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+  console.log("TOKEN USED:", token); // debug
+
+  if (token) {
+    fetch("https://api.spotify.com/v1/me", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          console.error("API ERROR:", text);
+          return null;
+        }
+        return res.json();
       })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("USER:", data);
-
-          if (data.images && data.images.length > 0) {
-            setImage(data.images[0].url);
-          }
-        });
-    }
-  }, []);
+      .then((data) => {
+        if (data && data.images && data.images.length > 0) {
+          setImage(data.images[0].url);
+        }
+      })
+      .catch((err) => console.error("Fetch error:", err));
+  }
+}, []);
 
   return (
     <div className="sidebar-container">
