@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import APIKIT from "../spotify";
 
 export default function Library() {
-  /*const [playlists, setPlaylists] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
 
   useEffect(() => {
     console.log("LIBRARY LOADED");
@@ -15,18 +15,19 @@ export default function Library() {
         setPlaylists(response.data.items);
       })
       .catch((err) => console.error("ERROR:", err));
-  }, []);*/
+  }, []);
 
   return (
-    /*<div className="screen-container">
-      {playlists.map((playlist) => (
+  <div className="screen-container">
+    {playlists.length > 0 ? (
+      playlists.map((playlist) => (
         <div key={playlist.id}>
           {playlist.name}
         </div>
-      ))}
-    </div>*/
-    <div className="screen-container">
-      Library
-    </div>
-  );
+      ))
+    ) : (
+      <p>No playlists found</p>
+    )}
+  </div>
+);
 }
