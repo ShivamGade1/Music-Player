@@ -1,7 +1,7 @@
 import axios from "axios";
 // 🔐 SPOTIFY CONFIG
 const clientId = "bec5e0ed16c443f98b3e416e6fe8ab21";
-const redirectUri = "https://music-player-zeta-liard-95.vercel.app/";
+const redirectUri = "https://music-player1-roan.vercel.app/";
 
 const authEndpoint = "https://accounts.spotify.com/authorize";
 
